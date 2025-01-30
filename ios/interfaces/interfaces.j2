@@ -1,4 +1,10 @@
-interface {{ interface.name}}
+{% for interface in device.interfaces.all() %}
+interface {{ interface.name }}
   description {{ interface.description }}
-  ip address {{ interface.ip.address[0] }}
-  ipv6 address {{ interface.ipv6.address[0] }}
+  {% for address in interface.ip_addresses.filter(address__family=4) %}
+  ip address {{ address.address.ip }} {{ address.address.netmask }}
+  {% endfor %}
+  {% for address in interface.ip_addresses.filter(address__family=6) %}
+  ipv6 address {{ address.address.ip }}/{{ address.address.prefixlen }}
+  {% endfor %}
+{% endfor %}
