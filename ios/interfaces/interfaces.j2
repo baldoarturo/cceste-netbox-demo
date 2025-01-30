@@ -2,7 +2,7 @@
 interface {{ interface.name }}
   description {{ interface.description }}
   {% for address in interface.ip_addresses.filter(address__family=4) %}
-  ip address {{ address.address.ip }} {{ address.address.netmask }}
+  ip address {{ address.address.ip }} {{ address.address.netmask }}{% if not loop.first %} secondary{% endif +%}
   {% endfor %}
   {% for address in interface.ip_addresses.filter(address__family=6) %}
   ipv6 address {{ address.address.ip }}/{{ address.address.prefixlen }}
